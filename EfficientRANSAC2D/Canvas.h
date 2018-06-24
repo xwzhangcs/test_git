@@ -12,9 +12,6 @@
 
 class Canvas : public QWidget {
 private:
-	static enum { TOP_LEFT = 0, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT };
-
-private:
 	QImage orig_image;
 	QImage image;
 	float image_scale;
