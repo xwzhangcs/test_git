@@ -30,10 +30,10 @@ bld/
 #wwwroot/
 
 # data
-data
+data/
 
 # library
-opencv3.4
+opencv3.4/
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/

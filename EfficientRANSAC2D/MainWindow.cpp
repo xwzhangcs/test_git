@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	// create tool bar for file menu
 	ui.mainToolBar->addAction(ui.actionOpen);
 	ui.mainToolBar->addAction(ui.actionSave);
+	ui.mainToolBar->addSeparator();
+	ui.mainToolBar->addAction(ui.actionGenerateContours);
 
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(onOpen()));
 	connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(onSave()));
@@ -27,7 +29,7 @@ void MainWindow::onOpen() {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Load image..."), "", tr("Image files (*.png *.jpg *.bmp)"));
 	if (filename.isEmpty()) return;
 
-	setWindowTitle("Efficient RANSAC - " + filename);
+	setWindowTitle("Efficient RANSAC 2D - " + filename);
 	
 	canvas.loadImage(filename);
 	canvas.update();

@@ -68,6 +68,9 @@ public:
         actionSave->setIcon(icon1);
         actionGenerateContours = new QAction(MainWindowClass);
         actionGenerateContours->setObjectName(QStringLiteral("actionGenerateContours"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral("Resources/contour.png"), QSize(), QIcon::Normal, QIcon::Off);
+        actionGenerateContours->setIcon(icon2);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindowClass->setCentralWidget(centralWidget);
@@ -106,7 +109,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindowClass)
     {
-        MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "Efficient RANSAC", Q_NULLPTR));
+        MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "Efficient RANSAC 2D", Q_NULLPTR));
         actionExit->setText(QApplication::translate("MainWindowClass", "Exit", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("MainWindowClass", "Open", Q_NULLPTR));
         actionOpen->setShortcut(QApplication::translate("MainWindowClass", "Ctrl+O", Q_NULLPTR));
