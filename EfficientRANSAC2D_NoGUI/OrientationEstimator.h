@@ -8,7 +8,7 @@ public:
 	OrientationEstimator() {}
 
 public:
-	static float estimate(const std::vector<std::vector<cv::Point2f>>& polygons);
+	static float estimate(const std::vector<util::Polygon>& polygons);
 	static float estimate(const std::vector<cv::Point2f>& polygon);
 };
 

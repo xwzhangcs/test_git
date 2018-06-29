@@ -15,26 +15,10 @@ int main(int argc, char *argv[]) {
 	cv::Mat image = cv::imread(argv[1], cv::IMREAD_GRAYSCALE);
 
 	// find contours
-	std::vector<Polygon> polygons = findContours(image, 40, false);
-
-	// detect circles
-	std::vector<std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>>> shapes(polygons.size());
-	for (int i = 0; i < polygons.size(); i++) {
-		if (polygons[i].contour.size() >= 100) {
-			CurveDetector::detect(polygons[i].contour, 200000, 200, 0.02, 30, 90, 80, 400, shapes[i]);
-		}
-	}
+	std::vector<util::Polygon> polygons = util::findContours(image, 40, false, true, false);
 
 	// detect principal orientation
-	std::vector<std::vector<cv::Point2f>> pgons;
-	for (auto& polygon : polygons) {
-		if (polygon.contour.size() < 100) continue;
-
-		std::vector<cv::Point2f> pgon;
-		for (auto& pt : polygon.contour) pgon.push_back(pt.pos);
-		pgons.push_back(pgon);
-	}
-	float principal_orientation = OrientationEstimator::estimate(pgons);
+	float principal_orientation = OrientationEstimator::estimate(polygons);
 
 	// use the principal orientation, +45, +90, +135 degrees as principal orientations
 	std::vector<float> principal_orientations;
@@ -42,12 +26,12 @@ int main(int argc, char *argv[]) {
 		principal_orientations.push_back(principal_orientation + CV_PI * i / 4);
 	}
 
-	// detect lines based on the principal orientations
+	// detect circles and lines
+	efficient_ransac::EfficientRANSAC er;
+	std::vector<std::vector<std::pair<int, std::shared_ptr<efficient_ransac::PrimitiveShape>>>> shapes(polygons.size());
 	for (int i = 0; i < polygons.size(); i++) {
 		if (polygons[i].contour.size() >= 100) {
-			std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>> results;
-			LineDetector::detect(polygons[i].contour, 20000, 30, 5, 20, 30, principal_orientations, 15, results);
-			shapes[i].insert(shapes[i].end(), results.begin(), results.end());
+			shapes[i] = er.detect(polygons[i].contour, 200000, 200, 0.02, 30, 90, 80, 400, 20000, 30, 5, 20, 30, 15, principal_orientations);
 		}
 	}
 
@@ -63,11 +47,11 @@ int main(int argc, char *argv[]) {
 		cv::Mat result(image.size(), CV_8UC3, cv::Scalar(255, 255, 255));
 		for (auto& polygon : polygons) {
 			std::vector<cv::Point> pol;
-			for (auto& pt : polygon.contour) pol.push_back(pt.pos);
+			for (auto& pt : polygon.contour) pol.push_back(pt);
 			cv::polylines(result, pol, true, cv::Scalar(0, 0, 0), 1);
 			for (auto& hole : polygon.holes) {
 				std::vector<cv::Point> pol;
-				for (auto& pt : hole) pol.push_back(pt.pos);
+				for (auto& pt : hole) pol.push_back(pt);
 				cv::polylines(result, pol, true, cv::Scalar(0, 0, 0), 1);
 			}
 		}

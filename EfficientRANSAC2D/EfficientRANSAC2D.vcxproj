@@ -51,8 +51,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -61,15 +61,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\opencv3.4\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\opencv3.4\lib;C:\CGAL-4.11.1\lib;C:\CGAL-4.11.1\auxiliary\gmp\lib;$(BOOST_LIBRARYDIR);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;opencv_core340d.lib;opencv_highgui340d.lib;opencv_imgcodecs340d.lib;opencv_imgproc340d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;opencv_core340d.lib;opencv_highgui340d.lib;opencv_imgcodecs340d.lib;opencv_imgproc340d.lib;CGAL_Core-vc120-mt-gd-4.11.1.lib;CGAL_ImageIO-vc120-mt-gd-4.11.1.lib;CGAL-vc120-mt-gd-4.11.1.lib;libgmp-10.lib;libmpfr-4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -83,8 +83,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -92,15 +92,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\opencv3.4\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;..\opencv3.4\lib;C:\CGAL-4.11.1\lib;C:\CGAL-4.11.1\auxiliary\gmp\lib;$(BOOST_LIBRARYDIR);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;opencv_core340.lib;opencv_highgui340.lib;opencv_imgcodecs340.lib;opencv_imgproc340.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;opencv_core340.lib;opencv_highgui340.lib;opencv_imgcodecs340.lib;opencv_imgproc340.lib;CGAL_Core-vc120-mt-4.11.1.lib;CGAL_ImageIO-vc120-mt-4.11.1.lib;CGAL-vc120-mt-4.11.1.lib;libgmp-10.lib;libmpfr-4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
-      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;%(AdditionalIncludeDirectories)</IncludePath>
-      <Define>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR);%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</Define>
     </QtMoc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -114,9 +114,12 @@
   <ItemGroup>
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\ContourGenerator.cpp" />
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\CurveDetector.cpp" />
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSAC.cpp" />
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSACUtil.cpp" />
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\LineDetector.cpp" />
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\OrientationEstimator.cpp" />
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\PrimitiveShape.cpp" />
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\RightAngleSimplification.cpp" />
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\Util.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="ContourOptionDialog.cpp" />
@@ -125,6 +128,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="CurveOptionDialog.cpp" />
+    <ClCompile Include="RightAngleOptionDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h" />
@@ -135,6 +139,7 @@
     <QtUic Include="LineOptionDialog.ui" />
     <QtUic Include="MainWindow.ui" />
     <QtUic Include="CurveOptionDialog.ui" />
+    <QtUic Include="RightAngleOptionDialog.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainWindow.qrc" />
@@ -142,11 +147,20 @@
   <ItemGroup>
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\ContourGenerator.h" />
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\CurveDetector.h" />
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSAC.h" />
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSACUtil.h" />
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\LineDetector.h" />
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\OrientationEstimator.h" />
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\PrimitiveShape.h" />
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\RightAngleSimplification.h" />
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\Util.h" />
     <ClInclude Include="Canvas.h" />
+    <QtMoc Include="RightAngleOptionDialog.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR)\.</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include;C:\CGAL-4.11.1\include;C:\CGAL-4.11.1\auxiliary\gmp\include;$(BOOST_INCLUDEDIR)\.</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_CRT_SECURE_NO_WARNINGS</Define>
+    </QtMoc>
     <QtMoc Include="ContourOptionDialog.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;.\..\opencv3.4\include</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>

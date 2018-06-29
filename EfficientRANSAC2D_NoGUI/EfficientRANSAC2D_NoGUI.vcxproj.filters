@@ -36,6 +36,12 @@
     <ClCompile Include="OrientationEstimator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EfficientRANSAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EfficientRANSACUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CurveDetector.h">
@@ -54,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OrientationEstimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EfficientRANSAC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EfficientRANSACUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

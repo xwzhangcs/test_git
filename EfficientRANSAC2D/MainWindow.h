@@ -19,6 +19,7 @@ public slots:
 	void onSave();
 	void onDetectCurves();
 	void onDetectLines();
+	void onRightAngle();
 	void onDetectCurvesLines();
 	void onGenerateContours();
 };

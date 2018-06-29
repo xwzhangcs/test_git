@@ -5,17 +5,17 @@
 /**
  * Estimate the orientation of the polygons using Hough Transform.
  */
-float OrientationEstimator::estimate(const std::vector<std::vector<cv::Point2f>>& polygons) {
+float OrientationEstimator::estimate(const std::vector<util::Polygon>& polygons) {
 	int max_rho = 0;
 	for (auto& polygon : polygons) {
-		for (auto& pt : polygon) {
+		for (auto& pt : polygon.contour) {
 			max_rho = std::max(max_rho, (int)std::ceil(pt.x * pt.x + pt.y * pt.y));
 		}
 	}
 
 	cv::Mat_<float> HT(max_rho * 2 + 1, 180, 0.0f);
 	for (auto& polygon : polygons) {
-		for (auto& pt : polygon) {
+		for (auto& pt : polygon.contour) {
 			for (int angle = 0; angle < 180; angle++) {
 				float rho = pt.x * std::cos((float)angle / 180.0f * CV_PI) + pt.y * std::sin((float)angle / 180.0f * CV_PI);
 				HT(std::round(rho) + max_rho, angle)++;

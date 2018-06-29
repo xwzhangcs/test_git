@@ -4,6 +4,7 @@
 #include "LineOptionDialog.h"
 #include "CurveLineOptionDialog.h"
 #include "ContourOptionDialog.h"
+#include "RightAngleOptionDialog.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	ui.setupUi(this);
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(close()));
 	connect(ui.actionDetectCurves, SIGNAL(triggered()), this, SLOT(onDetectCurves()));
 	connect(ui.actionDetectLines, SIGNAL(triggered()), this, SLOT(onDetectLines()));
+	connect(ui.actionRightAngle, SIGNAL(triggered()), this, SLOT(onRightAngle()));
 	connect(ui.actionDetectCurvesLines, SIGNAL(triggered()), this, SLOT(onDetectCurvesLines()));
 	connect(ui.actionGenerateContours, SIGNAL(triggered()), this, SLOT(onGenerateContours()));
 }
@@ -55,6 +57,14 @@ void MainWindow::onDetectLines() {
 	LineOptionDialog dlg;
 	if (dlg.exec()) {
 		canvas.detectLines(dlg.getNumIterations(), dlg.getMinPoints(), dlg.getMaxError(), dlg.getClusterEpsilon(), dlg.getMinLength(), dlg.getAngleThreshold() / 180.0 * CV_PI);
+		canvas.update();
+	}
+}
+
+void MainWindow::onRightAngle() {
+	RightAngleOptionDialog dlg;
+	if (dlg.exec()) {
+		canvas.rightAngle(dlg.getResolution(), dlg.getOptimization());
 		canvas.update();
 	}
 }

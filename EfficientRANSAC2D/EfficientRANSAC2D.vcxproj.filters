@@ -69,6 +69,18 @@
     <ClCompile Include="..\EfficientRANSAC2D_NoGUI\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\RightAngleSimplification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSACUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RightAngleOptionDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="MainWindow.h">
@@ -86,6 +98,9 @@
     <QtMoc Include="ContourOptionDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="RightAngleOptionDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
@@ -101,6 +116,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="ContourOptionDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="RightAngleOptionDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -129,6 +147,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\EfficientRANSAC2D_NoGUI\Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\RightAngleSimplification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSAC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\EfficientRANSAC2D_NoGUI\EfficientRANSACUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
