@@ -8,10 +8,10 @@ namespace efficient_ransac {
 	}
 
 	Circle::Circle(int index, const cv::Point2f& point, const cv::Point2f& center, float radius) : _center(center), _radius(radius) {
-		start_index = index;
-		start_point = point;
-		end_index = index;
-		end_point = point;
+		_start_index = index;
+		_start_point = point;
+		_end_index = index;
+		_end_point = point;
 	}
 
 	void CurveDetector::detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error_ratio_to_radius, float cluster_epsilon, float min_angle, float min_radius, float max_radius, std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>>& circles) {
@@ -58,48 +58,40 @@ namespace efficient_ransac {
 				if (circle->radius() < min_radius || circle->radius() > max_radius) continue;
 
 				// check whether the points are supporting this circle
-				std::vector<float> angles;
+				std::vector<cv::Point2f> supporting_points;
+				std::vector<int> supporting_indices;
 				float angle = std::atan2(polygon[index1].pos.y - circle->center().y, polygon[index1].pos.x - circle->center().x);
-				//circle->start_angle = circle->end_angle = angle;
-				angles.push_back(angle);
-				int num_points = 0;
+				supporting_points.push_back(polygon[index1].pos);
+				supporting_indices.push_back(index1);
 				int prev = 0;
-				circle->end_index = index1;
-				for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
-					int idx = (index1 + i) % N;
-					if (polygon[idx].used) break;
-					if (circle->distance(polygon[idx].pos) < circle->radius() * max_error_ratio_to_radius) {
-						num_points++;
-						prev = i;
-						float angle = std::atan2(polygon[idx].pos.y - circle->center().y, polygon[idx].pos.x - circle->center().x);
-						angles.push_back(angle);
-						circle->end_index = index1 + i;
-						circle->end_point = circle->center() + circle->radius() * cv::Point2f(std::cos(angle), std::sin(angle));
-					}
-				}
-				prev = 0;
-				circle->start_index = index1;
 				for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
 					int idx = (index1 - i + N) % N;
 					if (polygon[idx].used) break;
 					if (circle->distance(polygon[idx].pos) < circle->radius() * max_error_ratio_to_radius) {
-						num_points++;
 						prev = i;
-						float angle = std::atan2(polygon[idx].pos.y - circle->center().y, polygon[idx].pos.x - circle->center().x);
-						angles.push_back(angle);
-						circle->start_index = index1 - i;
-						circle->start_point = circle->center() + circle->radius() * cv::Point2f(std::cos(angle), std::sin(angle));
+						supporting_points.push_back(polygon[idx].pos);
+						supporting_indices.push_back(index1 - i);
+					}
+				}
+				std::reverse(supporting_points.begin(), supporting_points.end());
+				std::reverse(supporting_indices.begin(), supporting_indices.end());
+				prev = 0;
+				for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
+					int idx = (index1 + i) % N;
+					if (polygon[idx].used) break;
+					if (circle->distance(polygon[idx].pos) < circle->radius() * max_error_ratio_to_radius) {
+						prev = i;
+						supporting_points.push_back(polygon[idx].pos);
+						supporting_indices.push_back(index1 + i);
 					}
 				}
 
 				// calculate angle range
-				circle->setMinMaxAngles(angles);
-				//circle->angle_range = std::abs(circle->end_angle - circle->start_angle);
-				//if (circle->angle_range > CV_PI) circle->angle_range = CV_PI * 2 - circle->angle_range;
+				circle->setSupportingPoints(supporting_points, supporting_indices);
 				if (circle->angleRange() < min_angle) continue;
 
-				if (num_points > max_num_points) {
-					max_num_points = num_points;
+				if (circle->points().size() > max_num_points) {
+					max_num_points = circle->points().size();
 					best_circle = circle;
 					best_index1 = index1;
 				}
@@ -109,29 +101,9 @@ namespace efficient_ransac {
 			if (max_num_points < min_points) break;
 
 			// update used flag
-			int prev = 0;
-			std::vector<int> potentially_used;
-			for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
-				int idx = (best_index1 + i) % N;
-				if (polygon[idx].used) break;
-				potentially_used.push_back(idx);
-				if (best_circle->distance(polygon[idx].pos) < best_circle->radius() * max_error_ratio_to_radius) {
-					best_circle->points.push_back(polygon[idx].pos);
-					prev = i;
-					for (auto& pu : potentially_used) polygon[pu].used = true;
-				}
-			}
-			prev = 0;
-			potentially_used.clear();
-			for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
-				int idx = (best_index1 - i + N) % N;
-				if (polygon[idx].used) break;
-				potentially_used.push_back(idx);
-				if (best_circle->distance(polygon[idx].pos) < best_circle->radius() * max_error_ratio_to_radius) {
-					best_circle->points.push_back(polygon[idx].pos);
-					prev = i;
-					for (auto& pu : potentially_used) polygon[pu].used = true;
-				}
+			for (int i = best_circle->startIndex(); i <= best_circle->endIndex(); i++) {
+				int idx = (i + N) % N;
+				polygon[idx].used = true;
 			}
 
 			// update used list
@@ -139,7 +111,7 @@ namespace efficient_ransac {
 				if (polygon[unused_list[i]].used) unused_list.erase(unused_list.begin() + i);
 			}
 
-			circles.push_back({ best_circle->start_index, best_circle });
+			circles.push_back({ best_circle->startIndex(), best_circle });
 		}
 	}
 

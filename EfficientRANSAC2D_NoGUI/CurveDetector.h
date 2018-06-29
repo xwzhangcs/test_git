@@ -31,14 +31,14 @@ namespace efficient_ransac {
 		Circle(int index, const cv::Point2f& point, const cv::Point2f& center, float radius);
 		~Circle() {}
 
-		cv::Point2f center() { return _center; }
-		float radius() { return _radius; }
-		float startAngle() { return _start_angle; }
-		float endAngle() { return _end_angle; }
-		float angleRange() { return _angle_range; }
-		float signedAngleRange() { return _signed_angle_range; }
+		cv::Point2f center() const { return _center; }
+		float radius() const { return _radius; }
+		float startAngle() const { return _start_angle; }
+		float endAngle() const { return _end_angle; }
+		float angleRange() const { return _angle_range; }
+		float signedAngleRange() const { return _signed_angle_range; }
 
-		float distance(const cv::Point2f& p) {
+		float distance(const cv::Point2f& p) const {
 			return std::abs(cv::norm(p - _center) - _radius);
 		}
 
@@ -59,7 +59,6 @@ namespace efficient_ransac {
 			float max_gap = angles[0] + CV_PI * 2 - angles.back();
 			_angle_range = _end_angle - _start_angle;
 
-			std::sort(angles.begin(), angles.end());
 			for (int i = 1; i < angles.size(); i++) {
 				if (angles[i] - angles[i - 1] > max_gap) {
 					max_gap = angles[i] - angles[i - 1];
@@ -78,7 +77,7 @@ namespace efficient_ransac {
 			// swap start_angle and end_angle accroding to the start_point and end_point
 			cv::Point2f p1 = _center + _radius * cv::Point2f(std::cos(_start_angle), std::sin(_start_angle));
 			cv::Point2f p2 = _center + _radius * cv::Point2f(std::cos(_end_angle), std::sin(_end_angle));
-			if (cv::norm(start_point - p1) > cv::norm(start_point - p2)) {
+			if (cv::norm(_start_point - p1) > cv::norm(_start_point - p2)) {
 				std::swap(_start_angle, _end_angle);
 			}
 
@@ -88,6 +87,29 @@ namespace efficient_ransac {
 			else {
 				_signed_angle_range = -_angle_range;
 			}
+		}
+
+		void setSupportingPoints(const std::vector<cv::Point2f>& supporting_points, const std::vector<int>& supporting_indices) {
+			_points = supporting_points;
+
+			if (supporting_points.size() == 0) return;
+
+			float start_angle = std::atan2(supporting_points[0].y - _center.y, supporting_points[0].x - _center.x);
+			float end_angle = std::atan2(supporting_points.back().y - _center.y, supporting_points.back().x - _center.x);
+
+			_start_index = supporting_indices[0];
+			_start_point = _center + _radius * cv::Point2f(std::cos(start_angle), std::sin(start_angle));
+
+			_end_index = supporting_indices.back();
+			_end_point = _center + _radius * cv::Point2f(std::cos(end_angle), std::sin(end_angle));
+
+			// calculate all the angles for the supporting points
+			std::vector<float> angles;
+			for (auto& pt : supporting_points) {
+				float angle = std::atan2(pt.y - _center.y, pt.x - _center.x);
+				angles.push_back(angle);
+			}
+			setMinMaxAngles(angles);
 		}
 	};
 

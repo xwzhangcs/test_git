@@ -22,29 +22,34 @@ namespace efficient_ransac {
 		Line(int index, const cv::Point2f& point, const cv::Point2f& dir);
 		~Line() {}
 
-		cv::Point2f point() { return _point; }
-		cv::Point2f dir() { return _dir; }
+		cv::Point2f point() const { return _point; }
+		cv::Point2f dir() const { return _dir; }
 		void setDir(const cv::Point2f& dir) { _dir = dir; }
-		float length() { return _length; }
+		float length() const { return _length; }
 
-		float distance(const cv::Point2f& p) {
+		float distance(const cv::Point2f& p) const {
 			return std::abs((p - _point).dot(cv::Point2f(_dir.y, -_dir.x)));
 		}
 
-		void setEndPositions(const std::vector<cv::Point2f>& points) {
+		void setSupportingPoints(const std::vector<cv::Point2f>& supporting_points, const std::vector<int>& supporting_indices) {
+			_points = supporting_points;
+
+			if (supporting_points.size() == 0) return;
+
 			float _start_pos = std::numeric_limits<float>::max();
 			float _end_pos = -std::numeric_limits<float>::max();
 
-			for (auto& pt : points) {
+			for (auto& pt : supporting_points) {
 				float t = (pt - _point).dot(_dir);
 				_start_pos = std::min(_start_pos, t);
 				_end_pos = std::max(_end_pos, t);
 			}
-			if (points.size() > 0) {
-				start_point = _point + _dir * (points[0] - _point).dot(_dir);
-				end_point = _point + _dir * (points.back() - _point).dot(_dir);
-			}
-			_length = _end_pos - _start_pos;
+
+			_start_index = supporting_indices[0];
+			_start_point = _point + _dir * (supporting_points[0] - _point).dot(_dir);
+			_end_index = supporting_indices.back();
+			_end_point = _point + _dir * (supporting_points.back() - _point).dot(_dir);
+			//_length = _end_pos - _start_pos;
 		}
 	};
 

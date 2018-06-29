@@ -93,9 +93,10 @@ void Canvas::rightAngle(int resolution, bool optimization) {
 					int j2 = (j + 1) % res.contour.size();
 
 					efficient_ransac::Line* line = new efficient_ransac::Line(j, (res.contour[j] + res.contour[j2]) * 0.5, res.contour[j2] - res.contour[j]);
-					line->start_point = res.contour[j];
-					line->end_point = res.contour[j2];
-					line->setEndPositions({ res.contour[j], res.contour[j2] });
+					line->setSupportingPoints({ res.contour[j], res.contour[j2] }, { j, j2 });
+					//line->start_point = res.contour[j];
+					//line->end_point = res.contour[j2];
+					//line->setEndPositions({ res.contour[j], res.contour[j2] });
 					shapes[i].push_back({ j, std::shared_ptr<efficient_ransac::PrimitiveShape>(line) });
 				}
 
@@ -225,8 +226,8 @@ void Canvas::paintEvent(QPaintEvent *event) {
 				for (auto& shape : list) {
 					if (efficient_ransac::Circle* circle = dynamic_cast<efficient_ransac::Circle*>(shape.second.get())) {
 						painter.setPen(QPen(QColor(255, 192, 192), 1));
-						for (int i = 0; i < circle->points.size(); i++) {
-							painter.drawRect(circle->points[i].x * image_scale - 1, circle->points[i].y * image_scale - 1, 2, 2);
+						for (int i = 0; i < circle->points().size(); i++) {
+							painter.drawRect(circle->points()[i].x * image_scale - 1, circle->points()[i].y * image_scale - 1, 2, 2);
 						}
 
 						painter.setPen(QPen(QColor(255, 0, 0), 3));
@@ -235,13 +236,13 @@ void Canvas::paintEvent(QPaintEvent *event) {
 					}
 					else if (efficient_ransac::Line* line = dynamic_cast<efficient_ransac::Line*>(shape.second.get())) {
 						painter.setPen(QPen(QColor(192, 192, 255), 1));
-						for (int i = 0; i < line->points.size(); i++) {
-							painter.drawRect(line->points[i].x * image_scale - 1, line->points[i].y * image_scale - 1, 2, 2);
+						for (int i = 0; i < line->points().size(); i++) {
+							painter.drawRect(line->points()[i].x * image_scale - 1, line->points()[i].y * image_scale - 1, 2, 2);
 						}
 
 						painter.setPen(QPen(QColor(0, 0, 255), 3));
-						cv::Point2f p1 = line->start_point;
-						cv::Point2f p2 = line->end_point;
+						cv::Point2f p1 = line->startPoint();
+						cv::Point2f p2 = line->endPoint();
 						painter.drawLine(p1.x * image_scale, p1.y * image_scale, p2.x * image_scale, p2.y * image_scale);
 					}
 				}

@@ -7,10 +7,10 @@ namespace efficient_ransac {
 	}
 
 	Line::Line(int index, const cv::Point2f& point, const cv::Point2f& dir) : _point(point), _dir(dir / cv::norm(dir)) {
-		start_index = index;
-		start_point = point;
-		end_index = index;
-		end_point = point;
+		_start_index = index;
+		_start_point = point;
+		_end_index = index;
+		_end_point = point;
 	}
 
 	void LineDetector::detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, std::vector<float>& principal_angles, float angle_threshold, std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>>& lines) {
@@ -82,38 +82,37 @@ namespace efficient_ransac {
 				}
 
 				// check whether the points are supporting this line
-				std::vector<cv::Point2f> positions;
-				int num_points = 0;
+				std::vector<cv::Point2f> supporting_points;
+				std::vector<int> supporting_indices;
 				int prev = 0;
 				for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
 					int idx = (index1 - i + N) % N;
 					if (polygon[idx].used) break;
 					if (line->distance(polygon[idx].pos) < max_error) {
-						num_points++;
 						prev = i;
-						positions.push_back(polygon[idx].pos);
-						line->start_index = index1 - i;
+						supporting_points.push_back(polygon[idx].pos);
+						supporting_indices.push_back(index1 - i);
 					}
 				}
-				std::reverse(positions.begin(), positions.end());
+				std::reverse(supporting_points.begin(), supporting_points.end());
+				std::reverse(supporting_indices.begin(), supporting_indices.end());
 				prev = 0;
 				for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
 					int idx = (index1 + i) % N;
 					if (polygon[idx].used) break;
 					if (line->distance(polygon[idx].pos) < max_error) {
-						num_points++;
 						prev = i;
-						positions.push_back(polygon[idx].pos);
-						line->end_index = index1 + i;
+						supporting_points.push_back(polygon[idx].pos);
+						supporting_indices.push_back(index1 + i);
 					}
 				}
 
 				// calculate two end points of the line segment
-				line->setEndPositions(positions);
+				line->setSupportingPoints(supporting_points, supporting_indices);
 				if (line->length() < min_length) continue;
 
-				if (num_points > max_num_points) {
-					max_num_points = num_points;
+				if (line->points().size() > max_num_points) {
+					max_num_points = line->points().size();
 					best_line = line;
 					best_index1 = index1;
 				}
@@ -123,29 +122,9 @@ namespace efficient_ransac {
 			if (max_num_points < min_points) break;
 
 			// update used flag
-			int prev = 0;
-			std::vector<int> potentially_used;
-			for (int i = 0; i < N && i - prev < cluster_epsilon; i++) {
-				int idx = (best_index1 + i) % N;
-				if (polygon[idx].used) break;
-				potentially_used.push_back(idx);
-				if (best_line->distance(polygon[idx].pos) < max_error) {
-					best_line->points.push_back(polygon[idx].pos);
-					prev = i;
-					for (auto& pu : potentially_used) polygon[pu].used = true;
-				}
-			}
-			prev = 0;
-			potentially_used.clear();
-			for (int i = 1; i < N && i - prev < cluster_epsilon; i++) {
-				int idx = (best_index1 - i + N) % N;
-				if (polygon[idx].used) break;
-				potentially_used.push_back(idx);
-				if (best_line->distance(polygon[idx].pos) < max_error) {
-					best_line->points.push_back(polygon[idx].pos);
-					prev = i;
-					for (auto& pu : potentially_used) polygon[pu].used = true;
-				}
+			for (int i = best_line->startIndex(); i <= best_line->endIndex(); i++) {
+				int idx = (i + N) % N;
+				polygon[idx].used = true;
 			}
 
 			// update used list
@@ -153,7 +132,7 @@ namespace efficient_ransac {
 				if (polygon[unused_list[i]].used) unused_list.erase(unused_list.begin() + i);
 			}
 
-			lines.push_back({ best_line->start_index, best_line });
+			lines.push_back({ best_line->startIndex(), best_line });
 		}
 	}
 
