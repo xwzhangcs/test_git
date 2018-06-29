@@ -35,6 +35,7 @@ public:
     QAction *actionSave;
     QAction *actionGenerateContours;
     QAction *actionRightAngle;
+    QAction *actionDetectCurvesLinesWithRA;
     QWidget *centralWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -74,6 +75,8 @@ public:
         actionGenerateContours->setIcon(icon2);
         actionRightAngle = new QAction(MainWindowClass);
         actionRightAngle->setObjectName(QStringLiteral("actionRightAngle"));
+        actionDetectCurvesLinesWithRA = new QAction(MainWindowClass);
+        actionDetectCurvesLinesWithRA->setObjectName(QStringLiteral("actionDetectCurvesLinesWithRA"));
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         MainWindowClass->setCentralWidget(centralWidget);
@@ -100,11 +103,11 @@ public:
         menuFile->addAction(actionExit);
         menuTool->addAction(actionDetectCurves);
         menuTool->addAction(actionDetectLines);
+        menuTool->addAction(actionRightAngle);
         menuTool->addSeparator();
         menuTool->addAction(actionDetectCurvesLines);
         menuTool->addSeparator();
         menuTool->addAction(actionGenerateContours);
-        menuTool->addAction(actionRightAngle);
 
         retranslateUi(MainWindowClass);
 
@@ -124,6 +127,7 @@ public:
         actionSave->setText(QApplication::translate("MainWindowClass", "Save", Q_NULLPTR));
         actionGenerateContours->setText(QApplication::translate("MainWindowClass", "Generate Contours", Q_NULLPTR));
         actionRightAngle->setText(QApplication::translate("MainWindowClass", "Right Angle", Q_NULLPTR));
+        actionDetectCurvesLinesWithRA->setText(QApplication::translate("MainWindowClass", "Detect Curves/Lines with RA", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("MainWindowClass", "File", Q_NULLPTR));
         menuTool->setTitle(QApplication::translate("MainWindowClass", "Tool", Q_NULLPTR));
     } // retranslateUi

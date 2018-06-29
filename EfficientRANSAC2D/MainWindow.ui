@@ -38,11 +38,11 @@
     </property>
     <addaction name="actionDetectCurves"/>
     <addaction name="actionDetectLines"/>
+    <addaction name="actionRightAngle"/>
     <addaction name="separator"/>
     <addaction name="actionDetectCurvesLines"/>
     <addaction name="separator"/>
     <addaction name="actionGenerateContours"/>
-    <addaction name="actionRightAngle"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTool"/>
@@ -114,6 +114,11 @@
   <action name="actionRightAngle">
    <property name="text">
     <string>Right Angle</string>
+   </property>
+  </action>
+  <action name="actionDetectCurvesLinesWithRA">
+   <property name="text">
+    <string>Detect Curves/Lines with RA</string>
    </property>
   </action>
  </widget>

@@ -70,7 +70,7 @@ void Canvas::detectLines(int num_iterations, int min_points, float max_error, fl
 	shapes.resize(polygons.size());
 	for (int i = 0; i < polygons.size(); i++) {
 		if (polygons[i].contour.size() >= 100) {
-			shapes[i] = er.detectLines(polygons[i].contour, num_iterations, min_points, max_error, cluster_epsilon, min_length, angle_threshold, principal_orientations);
+			shapes[i] = er.detectLines(polygons[i].contour, num_iterations, min_points, max_error, cluster_epsilon, min_length, angle_threshold, principal_orientations, {});
 		}
 	}
 }
@@ -128,6 +128,39 @@ void Canvas::detectCurvesLines(int curve_num_iterations, int curve_min_points, f
 	}
 }
 
+void Canvas::detectCurvesLinesWithRA(int curve_num_iterations, int curve_min_points, float curve_max_error_ratio_to_radius, float curve_cluster_epsilon, float curve_min_angle, float curve_min_radius, float curve_max_radius, int line_num_iterations, int line_min_points, float line_max_error, float line_cluster_epsilon, float line_min_length, float line_angle_threshold, float ra_max_error, float ra_cluster_epsilon, bool ra_optimization) {
+	detectContours();
+
+	// detect principal orientation
+	float principal_orientation = OrientationEstimator::estimate(polygons);
+
+	// use the principal orientation, +45, +90, +135 degrees as principal orientations
+	std::vector<float> principal_orientations;
+	for (int i = 0; i < 4; i++) {
+		principal_orientations.push_back(principal_orientation + CV_PI * i / 4);
+	}
+
+	// find sparse contours
+	cv::Mat_<uchar> mat = cv::Mat(orig_image.height(), orig_image.width(), CV_8UC1, orig_image.bits(), orig_image.bytesPerLine()).clone();
+	std::vector<util::Polygon> sparse_polygons = util::findContours(mat, 40, true, false, true);
+
+	// detect circles and lines
+	efficient_ransac::EfficientRANSAC er;
+	shapes.resize(polygons.size());
+	for (int i = 0; i < polygons.size(); i++) {
+		if (polygons[i].contour.size() >= 100) {
+			util::Polygon ra_polygon;
+			try {
+				// detect right angle edges
+				ra_polygon = RightAngleSimplification::simplify(sparse_polygons[i], ra_max_error, principal_orientation, 0.02, ra_optimization);
+			}
+			catch (...) {}
+
+			shapes[i] = er.detectWithRA(polygons[i].contour, curve_num_iterations, curve_min_points, curve_max_error_ratio_to_radius, curve_cluster_epsilon, curve_min_angle, curve_min_radius, curve_max_radius, line_num_iterations, line_min_points, line_max_error, line_cluster_epsilon, line_min_length, line_angle_threshold, principal_orientations, ra_polygon.contour, ra_max_error, ra_cluster_epsilon);
+		}
+	}
+}
+
 void Canvas::generateContours(int curve_num_iterations, int curve_min_points, float curve_max_error_ratio_to_radius, float curve_cluster_epsilon, float curve_min_angle, float curve_min_radius, float curve_max_radius, int line_num_iterations, int line_min_points, float line_max_error, float line_cluster_epsilon, float line_min_length, float line_angle_threshold, float contour_max_error, float contour_angle_threshold) {
 	detectContours();
 
@@ -146,6 +179,50 @@ void Canvas::generateContours(int curve_num_iterations, int curve_min_points, fl
 	for (int i = 0; i < polygons.size(); i++) {
 		if (polygons[i].contour.size() >= 100) {
 			shapes[i] = er.detect(polygons[i].contour, curve_num_iterations, curve_min_points, curve_max_error_ratio_to_radius, curve_cluster_epsilon, curve_min_angle, curve_min_radius, curve_max_radius, line_num_iterations, line_min_points, line_max_error, line_cluster_epsilon, line_min_length, line_angle_threshold, principal_orientations);
+		}
+	}
+
+	// generate contours
+	contours.resize(shapes.size());
+	for (int i = 0; i < shapes.size(); i++) {
+		std::sort(shapes[i].begin(), shapes[i].end());
+		ContourGenerator::generate(polygons[i], shapes[i], contours[i], contour_max_error, contour_angle_threshold);
+
+		////////// DEBUG //////////
+		// calculate IOU
+		std::cout << "IOU = " << util::calculateIOUbyImage(polygons[i].contour, contours[i]) << std::endl;
+	}
+}
+
+void Canvas::generateContoursWithRA(int curve_num_iterations, int curve_min_points, float curve_max_error_ratio_to_radius, float curve_cluster_epsilon, float curve_min_angle, float curve_min_radius, float curve_max_radius, int line_num_iterations, int line_min_points, float line_max_error, float line_cluster_epsilon, float line_min_length, float line_angle_threshold, float contour_max_error, float contour_angle_threshold, float ra_max_error, float ra_cluster_epsilon, bool ra_optimization) {
+	detectContours();
+
+	// detect principal orientation
+	float principal_orientation = OrientationEstimator::estimate(polygons);
+
+	// use the principal orientation, +45, +90, +135 degrees as principal orientations
+	std::vector<float> principal_orientations;
+	for (int i = 0; i < 4; i++) {
+		principal_orientations.push_back(principal_orientation + CV_PI * i / 4);
+	}
+
+	// find sparse contours
+	cv::Mat_<uchar> mat = cv::Mat(orig_image.height(), orig_image.width(), CV_8UC1, orig_image.bits(), orig_image.bytesPerLine()).clone();
+	std::vector<util::Polygon> sparse_polygons = util::findContours(mat, 40, true, false, true);
+
+	// detect circles and lines
+	efficient_ransac::EfficientRANSAC er;
+	shapes.resize(polygons.size());
+	for (int i = 0; i < polygons.size(); i++) {
+		if (polygons[i].contour.size() >= 100) {
+			util::Polygon ra_polygon;
+			try {
+				// detect right angle edges
+				ra_polygon = RightAngleSimplification::simplify(sparse_polygons[i], ra_max_error, principal_orientation, 0.02, ra_optimization);
+			}
+			catch (...) {}
+
+			shapes[i] = er.detectWithRA(polygons[i].contour, curve_num_iterations, curve_min_points, curve_max_error_ratio_to_radius, curve_cluster_epsilon, curve_min_angle, curve_min_radius, curve_max_radius, line_num_iterations, line_min_points, line_max_error, line_cluster_epsilon, line_min_length, line_angle_threshold, principal_orientations, ra_polygon.contour, ra_max_error, ra_cluster_epsilon);
 		}
 	}
 
@@ -237,7 +314,12 @@ void Canvas::paintEvent(QPaintEvent *event) {
 							painter.drawRect(line->points()[i].x * image_scale - 1, line->points()[i].y * image_scale - 1, 2, 2);
 						}
 
-						painter.setPen(QPen(QColor(0, 0, 255), 3));
+						if (line->isRightAngle()) {
+							painter.setPen(QPen(QColor(0, 192, 0), 3));
+						}
+						else {
+							painter.setPen(QPen(QColor(0, 0, 255), 3));
+						}
 						cv::Point2f p1 = line->startPoint();
 						cv::Point2f p2 = line->endPoint();
 						painter.drawLine(p1.x * image_scale, p1.y * image_scale, p2.x * image_scale, p2.y * image_scale);

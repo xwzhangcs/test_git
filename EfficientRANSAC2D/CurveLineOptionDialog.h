@@ -28,7 +28,13 @@ public:
 	float getLineMinLength();
 	float getAngleThreshold();
 
+	bool getUseRA();
+	float getRAMaxError();
+	float getRAClusterEpsilon();
+	bool getRAOptimization();
+
 public slots:
+	void onUseRA();
 	void onOK();
 	void onCancel();
 };

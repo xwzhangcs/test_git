@@ -6,6 +6,7 @@
 
 namespace efficient_ransac {
 
+
 	class Line : public PrimitiveShape {
 	private:
 		/** Any point on the line */
@@ -17,6 +18,8 @@ namespace efficient_ransac {
 		/** Length of the line segment */
 		float _length;
 
+		bool _right_angle;
+
 	public:
 		Line();
 		Line(int index, const cv::Point2f& point, const cv::Point2f& dir);
@@ -26,6 +29,8 @@ namespace efficient_ransac {
 		cv::Point2f dir() const { return _dir; }
 		void setDir(const cv::Point2f& dir) { _dir = dir; }
 		float length() const { return _length; }
+		void setRightAngle(bool right_angle) { _right_angle = right_angle; }
+		bool isRightAngle() const { return _right_angle; }
 
 		float distance(const cv::Point2f& p) const {
 			return std::abs((p - _point).dot(cv::Point2f(_dir.y, -_dir.x)));
@@ -59,6 +64,7 @@ namespace efficient_ransac {
 
 	public:
 		static void detect(std::vector<Point>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, std::vector<float>& principal_angles, float angle_threshold, std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>>& lines);
+		static void detectWithRA(std::vector<Point>& polygon, int num_iter, int min_points, float max_error, float cluster_epsilon, float min_length, std::vector<float>& principal_angles, float angle_threshold, const std::vector<cv::Point2f>& ra_polygon, float ra_max_error, float ra_cluster_epsilon, std::vector<std::pair<int, std::shared_ptr<PrimitiveShape>>>& lines);
 	};
 
 }

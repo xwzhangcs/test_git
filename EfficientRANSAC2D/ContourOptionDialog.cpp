@@ -16,13 +16,20 @@ ContourOptionDialog::ContourOptionDialog(QWidget *parent) : QDialog(parent) {
 	ui.lineEditLineMaxError->setText("5");
 	ui.lineEditLineClusterEpsilon->setText("20");
 	ui.lineEditLineMinLength->setText("30");
-	ui.lineEditAngleThreshold->setText("15");
+	ui.lineEditLineAngleThreshold->setText("15");
+	ui.checkBoxUseRA->setChecked(false);
+	ui.lineEditRAMaxError->setText("20");
+	ui.lineEditRAClusterEpsilon->setText("20");
+	ui.checkBoxRAOptimization->setChecked(true);
 
 	ui.lineEditContourMaxError->setText("20");
 	ui.lineEditContourAngleThreshold->setText("10");
 
+	connect(ui.checkBoxUseRA, SIGNAL(clicked()), this, SLOT(onUseRA()));
 	connect(ui.pushButtonOK, SIGNAL(clicked()), this, SLOT(onOK()));
 	connect(ui.pushButtonCancel, SIGNAL(clicked()), this, SLOT(onCancel()));
+
+	onUseRA();
 }
 
 ContourOptionDialog::~ContourOptionDialog() {
@@ -76,8 +83,24 @@ float ContourOptionDialog::getLineMinLength() {
 	return ui.lineEditLineMinLength->text().toFloat();
 }
 
-float ContourOptionDialog::getAngleThreshold() {
-	return ui.lineEditAngleThreshold->text().toFloat();
+float ContourOptionDialog::getLineAngleThreshold() {
+	return ui.lineEditLineAngleThreshold->text().toFloat();
+}
+
+bool ContourOptionDialog::getUseRA() {
+	return ui.checkBoxUseRA->isChecked();
+}
+
+float ContourOptionDialog::getRAMaxError() {
+	return ui.lineEditRAMaxError->text().toFloat();
+}
+
+float ContourOptionDialog::getRAClusterEpsilon() {
+	return ui.lineEditLineClusterEpsilon->text().toFloat();
+}
+
+bool ContourOptionDialog::getRAOptimization() {
+	return ui.checkBoxRAOptimization->isChecked();
 }
 
 float ContourOptionDialog::getContourMaxError() {
@@ -86,6 +109,12 @@ float ContourOptionDialog::getContourMaxError() {
 
 float ContourOptionDialog::getContourAngleThreshold() {
 	return ui.lineEditContourAngleThreshold->text().toFloat();
+}
+
+void ContourOptionDialog::onUseRA() {
+	ui.lineEditRAMaxError->setEnabled(ui.checkBoxUseRA->isChecked());
+	ui.lineEditRAClusterEpsilon->setEnabled(ui.checkBoxUseRA->isChecked());
+	ui.checkBoxRAOptimization->setEnabled(ui.checkBoxUseRA->isChecked());
 }
 
 void ContourOptionDialog::onOK() {

@@ -213,7 +213,7 @@ double RightAngleSimplification::simplifyContour(const std::vector<cv::Point2f>&
 	}
 
 	// calculate the cost
-	double cost = 1.0 / (0.01 + util::calculateIOU(aa_contour, simplified_aa_contour));
+	double cost = 1.0 / (0.01 + util::calculateIOUbyImage(aa_contour, simplified_aa_contour));
 	cost += simplified_aa_contour.size() * 0.2;
 
 	result = simplified_aa_contour;

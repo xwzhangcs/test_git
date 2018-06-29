@@ -26,12 +26,17 @@ public:
 	float getLineMaxError();
 	float getLineClusterEpsilon();
 	float getLineMinLength();
-	float getAngleThreshold();
+	float getLineAngleThreshold();
+	bool getUseRA();
+	float getRAMaxError();
+	float getRAClusterEpsilon();
+	bool getRAOptimization();
 
 	float getContourMaxError();
 	float getContourAngleThreshold();
 
 public slots:
+	void onUseRA();
 	void onOK();
 	void onCancel();
 };

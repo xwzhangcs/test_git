@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
@@ -54,9 +55,15 @@ public:
     QLabel *label_10;
     QLabel *label_11;
     QLabel *label_12;
-    QLineEdit *lineEditAngleThreshold;
+    QLineEdit *lineEditLineAngleThreshold;
     QLabel *label_13;
     QLabel *label_15;
+    QLabel *label_19;
+    QLineEdit *lineEditRAMaxError;
+    QLineEdit *lineEditRAClusterEpsilon;
+    QCheckBox *checkBoxUseRA;
+    QCheckBox *checkBoxRAOptimization;
+    QLabel *label_20;
     QGroupBox *groupBox_3;
     QLabel *label_16;
     QLineEdit *lineEditContourMaxError;
@@ -68,10 +75,10 @@ public:
     {
         if (ContourOptionDialog->objectName().isEmpty())
             ContourOptionDialog->setObjectName(QStringLiteral("ContourOptionDialog"));
-        ContourOptionDialog->resize(301, 483);
+        ContourOptionDialog->resize(301, 574);
         pushButtonOK = new QPushButton(ContourOptionDialog);
         pushButtonOK->setObjectName(QStringLiteral("pushButtonOK"));
-        pushButtonOK->setGeometry(QRect(40, 440, 91, 31));
+        pushButtonOK->setGeometry(QRect(40, 530, 91, 31));
         groupBox = new QGroupBox(ContourOptionDialog);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(10, 10, 281, 171));
@@ -122,10 +129,10 @@ public:
         label_14->setGeometry(QRect(250, 100, 31, 16));
         pushButtonCancel = new QPushButton(ContourOptionDialog);
         pushButtonCancel->setObjectName(QStringLiteral("pushButtonCancel"));
-        pushButtonCancel->setGeometry(QRect(170, 440, 91, 31));
+        pushButtonCancel->setGeometry(QRect(170, 530, 91, 31));
         groupBox_2 = new QGroupBox(ContourOptionDialog);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox_2->setGeometry(QRect(10, 190, 281, 151));
+        groupBox_2->setGeometry(QRect(10, 190, 281, 241));
         lineEditLineMinLength = new QLineEdit(groupBox_2);
         lineEditLineMinLength->setObjectName(QStringLiteral("lineEditLineMinLength"));
         lineEditLineMinLength->setGeometry(QRect(140, 100, 101, 20));
@@ -156,18 +163,36 @@ public:
         label_12 = new QLabel(groupBox_2);
         label_12->setObjectName(QStringLiteral("label_12"));
         label_12->setGeometry(QRect(10, 60, 131, 16));
-        lineEditAngleThreshold = new QLineEdit(groupBox_2);
-        lineEditAngleThreshold->setObjectName(QStringLiteral("lineEditAngleThreshold"));
-        lineEditAngleThreshold->setGeometry(QRect(140, 120, 101, 20));
+        lineEditLineAngleThreshold = new QLineEdit(groupBox_2);
+        lineEditLineAngleThreshold->setObjectName(QStringLiteral("lineEditLineAngleThreshold"));
+        lineEditLineAngleThreshold->setGeometry(QRect(140, 120, 101, 20));
         label_13 = new QLabel(groupBox_2);
         label_13->setObjectName(QStringLiteral("label_13"));
         label_13->setGeometry(QRect(10, 120, 131, 16));
         label_15 = new QLabel(groupBox_2);
         label_15->setObjectName(QStringLiteral("label_15"));
         label_15->setGeometry(QRect(250, 120, 31, 16));
+        label_19 = new QLabel(groupBox_2);
+        label_19->setObjectName(QStringLiteral("label_19"));
+        label_19->setGeometry(QRect(10, 170, 131, 16));
+        lineEditRAMaxError = new QLineEdit(groupBox_2);
+        lineEditRAMaxError->setObjectName(QStringLiteral("lineEditRAMaxError"));
+        lineEditRAMaxError->setGeometry(QRect(140, 170, 101, 20));
+        lineEditRAClusterEpsilon = new QLineEdit(groupBox_2);
+        lineEditRAClusterEpsilon->setObjectName(QStringLiteral("lineEditRAClusterEpsilon"));
+        lineEditRAClusterEpsilon->setGeometry(QRect(140, 190, 101, 20));
+        checkBoxUseRA = new QCheckBox(groupBox_2);
+        checkBoxUseRA->setObjectName(QStringLiteral("checkBoxUseRA"));
+        checkBoxUseRA->setGeometry(QRect(10, 150, 141, 17));
+        checkBoxRAOptimization = new QCheckBox(groupBox_2);
+        checkBoxRAOptimization->setObjectName(QStringLiteral("checkBoxRAOptimization"));
+        checkBoxRAOptimization->setGeometry(QRect(10, 210, 101, 17));
+        label_20 = new QLabel(groupBox_2);
+        label_20->setObjectName(QStringLiteral("label_20"));
+        label_20->setGeometry(QRect(10, 190, 131, 16));
         groupBox_3 = new QGroupBox(ContourOptionDialog);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        groupBox_3->setGeometry(QRect(10, 350, 281, 71));
+        groupBox_3->setGeometry(QRect(10, 440, 281, 71));
         label_16 = new QLabel(groupBox_3);
         label_16->setObjectName(QStringLiteral("label_16"));
         label_16->setGeometry(QRect(10, 20, 91, 16));
@@ -211,6 +236,10 @@ public:
         label_12->setText(QApplication::translate("ContourOptionDialog", "Max error:", Q_NULLPTR));
         label_13->setText(QApplication::translate("ContourOptionDialog", "Angle threshold:", Q_NULLPTR));
         label_15->setText(QApplication::translate("ContourOptionDialog", "[deg]", Q_NULLPTR));
+        label_19->setText(QApplication::translate("ContourOptionDialog", "Max error:", Q_NULLPTR));
+        checkBoxUseRA->setText(QApplication::translate("ContourOptionDialog", "Use right angle method", Q_NULLPTR));
+        checkBoxRAOptimization->setText(QApplication::translate("ContourOptionDialog", "Optimization", Q_NULLPTR));
+        label_20->setText(QApplication::translate("ContourOptionDialog", "Cluster epsilon:", Q_NULLPTR));
         groupBox_3->setTitle(QApplication::translate("ContourOptionDialog", "Contour", Q_NULLPTR));
         label_16->setText(QApplication::translate("ContourOptionDialog", "Max error:", Q_NULLPTR));
         label_17->setText(QApplication::translate("ContourOptionDialog", "Angle threshold:", Q_NULLPTR));
