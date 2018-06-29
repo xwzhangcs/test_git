@@ -49,7 +49,7 @@ namespace efficient_ransac {
 			_start_point = _point + _dir * (supporting_points[0] - _point).dot(_dir);
 			_end_index = supporting_indices.back();
 			_end_point = _point + _dir * (supporting_points.back() - _point).dot(_dir);
-			//_length = _end_pos - _start_pos;
+			_length = _end_pos - _start_pos;
 		}
 	};
 

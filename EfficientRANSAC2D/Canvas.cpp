@@ -94,9 +94,6 @@ void Canvas::rightAngle(int resolution, bool optimization) {
 
 					efficient_ransac::Line* line = new efficient_ransac::Line(j, (res.contour[j] + res.contour[j2]) * 0.5, res.contour[j2] - res.contour[j]);
 					line->setSupportingPoints({ res.contour[j], res.contour[j2] }, { j, j2 });
-					//line->start_point = res.contour[j];
-					//line->end_point = res.contour[j2];
-					//line->setEndPositions({ res.contour[j], res.contour[j2] });
 					shapes[i].push_back({ j, std::shared_ptr<efficient_ransac::PrimitiveShape>(line) });
 				}
 
