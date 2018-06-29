@@ -100,6 +100,7 @@ void Canvas::rightAngle(int resolution, bool optimization) {
 				////////// DEBUG //////////
 				// calculate IOU
 				std::cout << "IOU = " << util::calculateIOU(sparse_polygons[i].contour, res.contour) << std::endl;
+				std::cout << "#vertices = " << contours[i].size() << std::endl;
 			}
 			catch (...) {}
 		}
@@ -191,6 +192,7 @@ void Canvas::generateContours(int curve_num_iterations, int curve_min_points, fl
 		////////// DEBUG //////////
 		// calculate IOU
 		std::cout << "IOU = " << util::calculateIOUbyImage(polygons[i].contour, contours[i]) << std::endl;
+		std::cout << "#vertices = " << contours[i].size() << std::endl;
 	}
 }
 
@@ -235,6 +237,7 @@ void Canvas::generateContoursWithRA(int curve_num_iterations, int curve_min_poin
 		////////// DEBUG //////////
 		// calculate IOU
 		std::cout << "IOU = " << util::calculateIOUbyImage(polygons[i].contour, contours[i]) << std::endl;
+		std::cout << "#vertices = " << contours[i].size() << std::endl;
 	}
 }
 
