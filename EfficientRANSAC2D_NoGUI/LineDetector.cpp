@@ -120,8 +120,8 @@ namespace efficient_ransac {
 			}
 
 			// if the best detected line does not have enough supporing points, terminate the algorithm.
-			if (max_num_points < min_points) break;
-
+			if (max_num_points < min_points || max_num_points == 0) break;
+			
 			// update used flag
 			for (int i = best_line->startIndex(); i <= best_line->endIndex(); i++) {
 				int idx = (i + N) % N;

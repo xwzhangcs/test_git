@@ -18,11 +18,11 @@ LineOptionDialog::~LineOptionDialog() {
 }
 
 int LineOptionDialog::getNumIterations() {
-	return ui.lineEditNumIterations->text().toInt();
+	return ui.lineEditNumIterations->text().toFloat();
 }
 
 int LineOptionDialog::getMinPoints() {
-	return ui.lineEditMinPoints->text().toInt();
+	return ui.lineEditMinPoints->text().toFloat();
 }
 
 float LineOptionDialog::getMaxError() {

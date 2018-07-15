@@ -196,6 +196,8 @@ namespace util {
 	}
 
 	float calculateIOU(const std::vector<cv::Point2f>& polygon1, const std::vector<cv::Point2f>& polygon2) {
+		if (polygon1.size() == 0 || polygon2.size() == 0) return 0;
+
 		CGAL::Polygon_2<Kernel> pol1;
 		for (auto& pt : polygon1) {
 			pol1.push_back(Kernel::Point_2(pt.x, pt.y));

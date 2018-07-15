@@ -34,11 +34,11 @@ CurveLineOptionDialog::~CurveLineOptionDialog() {
 }
 
 int CurveLineOptionDialog::getCurveNumIterations() {
-	return ui.lineEditCurveNumIterations->text().toInt();
+	return ui.lineEditCurveNumIterations->text().toFloat();
 }
 
 int CurveLineOptionDialog::getCurveMinPoints() {
-	return ui.lineEditCurveMinPoints->text().toInt();
+	return ui.lineEditCurveMinPoints->text().toFloat();
 }
 
 float CurveLineOptionDialog::getCurveMaxErrorRatioToRadius() {
@@ -62,11 +62,11 @@ float CurveLineOptionDialog::getCurveMaxRadius() {
 }
 
 int CurveLineOptionDialog::getLineNumIterations() {
-	return ui.lineEditLineNumIterations->text().toInt();
+	return ui.lineEditLineNumIterations->text().toFloat();
 }
 
 int CurveLineOptionDialog::getLineMinPoints() {
-	return ui.lineEditLineMinPoints->text().toInt();
+	return ui.lineEditLineMinPoints->text().toFloat();
 }
 
 float CurveLineOptionDialog::getLineMaxError() {

@@ -19,11 +19,11 @@ CurveOptionDialog::~CurveOptionDialog() {
 }
 
 int CurveOptionDialog::getNumIterations() {
-	return ui.lineEditNumIterations->text().toInt();
+	return ui.lineEditNumIterations->text().toFloat();
 }
 
 int CurveOptionDialog::getMinPoints() {
-	return ui.lineEditMinPoints->text().toInt();
+	return ui.lineEditMinPoints->text().toFloat();
 }
 
 float CurveOptionDialog::getMaxErrorRatioToRadius() {
